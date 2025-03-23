@@ -38,8 +38,10 @@ public class BossDecision : MonoBehaviour
     public void AttackNOW()
     {
         //Send AI
-        Vector3 playerPos = Environment.GetPlayer().transform.position;
-        Vector3 playerVelos = Environment.GetPlayer().GetComponent<Rigidbody2D>().velocity;
+        //Vector3 playerPos = Environment.GetPlayer().transform.position;
+        Vector3 playerPos = BM.Player.transform.position;
+        //Vector3 playerVelos = Environment.GetPlayer().GetComponent<Rigidbody2D>().velocity;
+        Vector3 playerVelos = BM.Player.GetComponent<Rigidbody2D>().velocity;
         string note = $"{playerPos.x},{playerPos.y},{transform.position.x},{transform.position.y},{playerVelos.x},{playerVelos.y},{atkCount},-1";
         AD.SendAI(note,atkCount);
         //SendAttack();
@@ -50,8 +52,10 @@ public class BossDecision : MonoBehaviour
         else
         {
             //Send AI
-            Vector3 playerPos = Environment.GetPlayer().transform.position;
-            Vector3 playerVelos = Environment.GetPlayer().GetComponent<Rigidbody2D>().velocity;
+            //Vector3 playerPos = Environment.GetPlayer().transform.position;
+            Vector3 playerPos = BM.Player.transform.position;
+            //Vector3 playerVelos = Environment.GetPlayer().GetComponent<Rigidbody2D>().velocity;
+            Vector3 playerVelos = BM.Player.GetComponent<Rigidbody2D>().velocity;
             string note = $"{playerPos.x},{playerPos.y},{transform.position.x},{transform.position.y},{playerVelos.x},{playerVelos.y},{atkCount},{moveset}";
             AD.SendAI(note, atkCount);
             //SendAttack();
@@ -88,15 +92,19 @@ public class BossDecision : MonoBehaviour
         if (new List<int> { 6, 12 }.Contains(ap.moveset)){
             for(int i=0;i<4;i++)
             {
-                ap.pos[i].x = ap.pos[i].x * (rules[ap.moveset][4].Item2 - rules[ap.moveset][4].Item1) + rules[ap.moveset][4].Item1;
-                ap.pos[i].y = ap.pos[i].y * (rules[ap.moveset][5].Item2 - rules[ap.moveset][5].Item1) + rules[ap.moveset][5].Item1;
+                ap.pos[i].x = BM.startPos.x + ap.pos[i].x * (rules[ap.moveset][4].Item2 - rules[ap.moveset][4].Item1) + rules[ap.moveset][4].Item1;
+                ap.pos[i].y = BM.startPos.y + ap.pos[i].y * (rules[ap.moveset][5].Item2 - rules[ap.moveset][5].Item1) + rules[ap.moveset][5].Item1;
             }
         }
         //Left of Right
         if (new List<int> { 1,4, 10, 11 }.Contains(ap.moveset)) ap.rotation = ap.rotation > 90 ? 180 : 0;
 
         //Rotate downward
-        if (new List<int> { 3, 5,8 }.Contains(ap.moveset) && transform.position.y > Environment.GetPlayer().transform.position.y)
+        //if (new List<int> { 3, 5,8 }.Contains(ap.moveset) && transform.position.y > Environment.GetPlayer().transform.position.y)
+        //{
+        //    ap.rotation *= -1;
+        //}
+        if (new List<int> { 3, 5, 8 }.Contains(ap.moveset) && transform.position.y > BM.Player.transform.position.y)
         {
             ap.rotation *= -1;
         }

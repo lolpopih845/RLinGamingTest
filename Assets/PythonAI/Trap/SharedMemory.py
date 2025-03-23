@@ -3,7 +3,7 @@ import numpy as np
 
 
 class SharedMemory:
-    max_size = 100  # Limit total memory size
+    max_size = 300  # Limit total memory size
     states = []
     probs = []
     vals = []
@@ -14,7 +14,7 @@ class SharedMemory:
     trainingNo = 0
     
 
-    batch_size = 16
+    batch_size = 96
     def generate_batches():
         n_states = len(SharedMemory.states)
         batch_start = np.arange(0, n_states, SharedMemory.batch_size)
@@ -26,7 +26,7 @@ class SharedMemory:
             max_len = max(len(s) for s in SharedMemory.states)  # Find longest state
             padded_states = np.array([s + [0] * (max_len - len(s)) for s in SharedMemory.states], dtype=np.float32)
             
-            return padded_states, \
+            return np.array(SharedMemory.states, dtype=np.float32), \
                 np.array(SharedMemory.actions, dtype=np.float32), \
                 np.array(SharedMemory.probs, dtype=np.float32), \
                 np.array(SharedMemory.vals, dtype=np.float32), \
@@ -55,7 +55,7 @@ class SharedMemory:
     @staticmethod
     def train_if_ready(agent):
         agent.load_models()
-        training = True
+        SharedMemory.training = True
         if len(SharedMemory.actions) >= SharedMemory.batch_size:
             states, actions, probs, values, rewards, dones, batches = SharedMemory.generate_batches()
 
@@ -76,6 +76,6 @@ class SharedMemory:
             SharedMemory.clear_memory()
             SharedMemory.trainingNo +=1
             print("Trap training done :",SharedMemory.trainingNo)
-            training = False
+        SharedMemory.training = False
             
             

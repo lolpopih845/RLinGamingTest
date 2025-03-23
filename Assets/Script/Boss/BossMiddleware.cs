@@ -23,8 +23,14 @@ public class BossMiddleware : MonoBehaviour
 
     private GameObject[] Fakemen;
     private GameObject RealBoss;
+    //Temp for multi Env
+    public GameObject Player;
+
+    //Temp
+    public Vector3 startPos;
     void Start()
     {
+        startPos = transform.position;
         BD = GetComponent<BossDecision>();
         BE = GetComponent<BossExecute>();
         if (amIReal)

@@ -102,7 +102,7 @@ public class HitboxHandler : MonoBehaviour
             case 8:
                 squareHitbox.SetHitbox(3, 3.5f, 0, ap.rotation, realboi);
                 squareHitbox.StartTelegraphHitbox(ap.telegraphTime, true, 5);
-                attackHitboxesQueue.Enqueue(((WaveProj)Instantiate(attackPrefabs[moveset])).SetUpHitbox(transform.position.x, transform.position.y, 2 * Environment.BossFacePlayer(transform), ap.rotation, 1.5f, 0.5f, 0.25f,this, realboi));
+                attackHitboxesQueue.Enqueue(((WaveProj)Instantiate(attackPrefabs[moveset])).SetUpHitbox(transform.position.x, transform.position.y, 2 * transform.parent.localScale.x, ap.rotation, 1.5f, 0.5f, 0.25f,this, realboi));
                 //Projs
                 break;
             case 9:
@@ -114,9 +114,9 @@ public class HitboxHandler : MonoBehaviour
                 }
                 else
                 {
-                    squareHitbox.SetHitbox(1, 4f, -1 * Environment.BossFacePlayer(transform), -90, realboi);
+                    squareHitbox.SetHitbox(1, 4f, -1 * transform.parent.localScale.x, -90, realboi);
                     squareHitbox.StartTelegraphHitbox(ap.telegraphTime, true, 7.5f);
-                    attackHitboxesQueue.Enqueue(((BossSlash)Instantiate(attackPrefabs[1], transform)).SetUpHitbox(2, -3, 2 * Environment.BossFacePlayer(transform), 0, 1.5f, 0f, 0.5f, realboi));
+                    attackHitboxesQueue.Enqueue(((BossSlash)Instantiate(attackPrefabs[1], transform)).SetUpHitbox(2, -3, 2 * transform.parent.localScale.x, 0, 1.5f, 0f, 0.5f, realboi));
                 }
                 break;
             case 10:
@@ -214,7 +214,8 @@ public class HitboxHandler : MonoBehaviour
                 AIboi.AccumTrapReward(3);
                 if (BM.AmIReal())
                 {
-                    Environment.DamagePlayer();
+                    //Environment.DamagePlayer();
+                    BM.Player.GetComponent<PlayerCombat>().Damage();
                     AIboi.AccumReward(2);
                 }
 
@@ -224,7 +225,8 @@ public class HitboxHandler : MonoBehaviour
                 
                 if (BM.AmIReal())
                 {
-                    Environment.DamagePlayer();
+                    //Environment.DamagePlayer();
+                    BM.Player.GetComponent<PlayerCombat>().Damage();
                     AIboi.AccumReward(10);
                 }
                 else

@@ -23,6 +23,8 @@ public class BossExecute : MonoBehaviour
     private bool onGroundState = false;
 
     private float truIdleTimer = 2;
+
+    
     void Start()
     {
         BM = GetComponent<BossMiddleware>();
@@ -33,7 +35,7 @@ public class BossExecute : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UtilV.PreventOotOfBound(transform,new Vector3(UtilV.bossWidth,UtilV.bossHeight));
+        PreventOotOfBound(transform,new Vector3(UtilV.bossWidth,UtilV.bossHeight));
         if(!BM.IsAttacking())
         {
             Idling();
@@ -62,10 +64,15 @@ public class BossExecute : MonoBehaviour
         }
         else
         {
-            if (Mathf.Abs(Environment.GetPlayer().transform.position.x - transform.position.x) > UtilV.bossWidth/2 + 0.5f)
+            //if (Mathf.Abs(Environment.GetPlayer().transform.position.x - transform.position.x) > UtilV.bossWidth/2 + 0.5f)
+            //{
+            //    transform.localScale = new Vector3(Environment.BossFacePlayer(transform), 1);
+            //    transform.position += new Vector3(Environment.BossFacePlayer(transform) * Time.deltaTime, 0);
+            //}
+            if (Mathf.Abs(BM.Player.transform.position.x - transform.position.x) > UtilV.bossWidth / 2 + 0.5f)
             {
-                transform.localScale = new Vector3(Environment.BossFacePlayer(transform), 1);
-                transform.position += new Vector3(Environment.BossFacePlayer(transform) * Time.deltaTime, 0);
+                transform.localScale = new Vector3(BM.Player.transform.position.x > transform.position.x ? 1 : -1, 1);
+                transform.position += new Vector3(BM.Player.transform.position.x > transform.position.x ? 1 : -1 * Time.deltaTime, 0);
             }
         }
     }
@@ -127,10 +134,33 @@ public class BossExecute : MonoBehaviour
         {
             time -= Time.deltaTime;
             transform.position += dist/((maxtime-time)*8) * Time.deltaTime * new Vector3(Mathf.Cos(rot * Mathf.PI / 180), Mathf.Sin(rot * Mathf.PI / 180));
-            UtilV.PreventOotOfBound(transform, new Vector3(UtilV.bossWidth, UtilV.bossHeight));
+            PreventOotOfBound(transform, new Vector3(UtilV.bossWidth, UtilV.bossHeight));
             yield return null;
         }
         
+    }
+
+    //Temp
+    private void PreventOotOfBound(Transform t, Vector3 scale)
+    {
+        float x = t.position.x, y = t.position.y;
+        if (t.position.x < BM.startPos.x + UtilV.BORDERLEFT + scale.x / 2)
+        {
+            x = BM.startPos.x + UtilV.BORDERLEFT + scale.x / 2;
+        }
+        if (t.position.x > BM.startPos.x + UtilV.BORDERRIGHT - scale.x / 2)
+        {
+            x = BM.startPos.x + UtilV.BORDERRIGHT - scale.x / 2;
+        }
+        if (t.position.y < BM.startPos.y + UtilV.BORDERFLOOR + scale.y / 2)
+        {
+            y = BM.startPos.y + UtilV.BORDERFLOOR + scale.y / 2;
+        }
+        if (t.position.y > BM.startPos.y + UtilV.BORDERTOP - scale.y / 2)
+        {
+            y = BM.startPos.y + UtilV.BORDERTOP - scale.y / 2;
+        }
+        t.position = new Vector3(x, y);
     }
     #endregion
 

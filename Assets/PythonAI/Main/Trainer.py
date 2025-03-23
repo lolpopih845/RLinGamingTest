@@ -54,6 +54,7 @@ class Trainer:
     def Reward(self,message):
         if not self.waitingForReward: return
         self.reward = [int(message[3])+int(message[4]),bool(message[6])]
+        print(self.observe)
         self.agent.remember(self.observe, self.action, self.prob, self.val, self.reward[0], self.reward[1])
         if self.agentNo == 0: threading.Thread(target=Train).start()
         self.waitingForReward = False

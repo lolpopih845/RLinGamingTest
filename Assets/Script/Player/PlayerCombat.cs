@@ -20,8 +20,12 @@ public class PlayerCombat : MonoBehaviour
     private SpriteRenderer spr;
     private float timely=0;
 
+    //Temp
+    private Vector3 startPos;
+
     void Start()
     {
+        startPos = transform.position;
         colly = GetComponent<Collider2D>();
         spr = GetComponent<SpriteRenderer>();
         
@@ -31,14 +35,14 @@ public class PlayerCombat : MonoBehaviour
     void Update()
     {
         timely += Time.deltaTime;
-        if(transform.position.y<-10) transform.position = new Vector2(Random.Range(UtilV.BORDERLEFT, UtilV.BORDERRIGHT), Random.Range(UtilV.BORDERFLOOR, UtilV.BORDERTOP + 1));
+        if(transform.position.y<-10) transform.position = new Vector2(Random.Range(startPos.x + UtilV.BORDERLEFT, startPos.x + UtilV.BORDERRIGHT), Random.Range(startPos.y + UtilV.BORDERFLOOR, startPos.y + UtilV.BORDERTOP + 1));
     }
     public void Damage()
     {
         StartCoroutine(IFrame());
         Debug.Log(timely);
         timely = 0;
-        transform.position = new Vector2(Random.Range(UtilV.BORDERLEFT, UtilV.BORDERRIGHT), Random.Range(UtilV.BORDERFLOOR, UtilV.BORDERTOP+1));
+        transform.position = new Vector2(Random.Range(startPos.x + UtilV.BORDERLEFT, startPos.x+UtilV.BORDERRIGHT), Random.Range(startPos.y + UtilV.BORDERFLOOR, startPos.y + UtilV.BORDERTOP+1));
     }
     private IEnumerator IFrame()
     {

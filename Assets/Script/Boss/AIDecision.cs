@@ -18,7 +18,6 @@ public class AIDecision : MonoBehaviour
         Waiting,
         Critic
     }
-
     private Order order;
     private int totalReward = 0;
     private int trapReward = 0;
@@ -33,13 +32,13 @@ public class AIDecision : MonoBehaviour
     {
         string observe = $"Observe,{bossNo},";
         observe += note;
-        Debug.Log($"Observe: {observe}");
+        //Debug.Log($"Observe: {observe}");
         string action = "";
         SendReward(preqMS, atkCount);
         if (order == Order.Waiting)
         {
             action = await PipeHolder.SendObservationAsync(observe);
-            Debug.Log($"AI{bossNo} Response: {action}");
+            //Debug.Log($"AI{bossNo} Response: {action}");
             order = Order.Critic;
         }
 
