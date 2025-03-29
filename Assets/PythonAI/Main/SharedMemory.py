@@ -20,7 +20,7 @@ class SharedMemory:
         batch_start = np.arange(0, n_states, SharedMemory.batch_size)
         indices = np.arange(n_states, dtype=np.int64)
         np.random.shuffle(indices)
-        batches = [indices[i:i+SharedMemory.batch_size] for i in batch_start]
+        batches = [indices[i:i+SharedMemory.batch_size] for i in batch_start if i+SharedMemory.batch_size <= n_states]
 
         try:
             max_len = max(len(s) for s in SharedMemory.states)  # Find longest state

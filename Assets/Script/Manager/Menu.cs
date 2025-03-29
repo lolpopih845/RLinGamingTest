@@ -12,7 +12,7 @@ public class Menu : MonoBehaviour
     void Start()
     {
         PipeHolder.StartAIAgent();
-
+        AIModel.LoadData();
     }
     private void Update()
     {

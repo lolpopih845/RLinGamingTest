@@ -138,8 +138,7 @@ class Agent:
             for batch in batches:
                 states = state_arr[batch].clone().detach().to(self.actor.device)
                 old_probs = old_prob_arr[batch].clone().detach().to(self.actor.device)
-                valid_batch = [i for i in batch if i < len(action_arr)]  # Ensure indices are in range
-                actions = torch.tensor(np.array(action_arr[valid_batch]), dtype=torch.long, device=self.actor.device)
+                actions = torch.tensor(np.array(action_arr)[batch], dtype=torch.long, device=self.actor.device)
 
 
                 # Get current policy distributions

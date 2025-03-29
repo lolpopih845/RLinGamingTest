@@ -145,8 +145,7 @@ class Agent:
             for batch in batches:
                 states = state_arr[batch].clone().detach().to(self.actor.device)
                 old_probs = old_prob_arr[batch].clone().detach().to(self.actor.device)
-                valid_batch = [i for i in batch if i < len(action_arr)]
-                actions = torch.tensor(np.array(action_arr[valid_batch]), dtype=torch.long, device=self.actor.device)
+                actions = torch.tensor(np.array(action_arr)[batch], dtype=torch.long, device=self.actor.device)
 
                 dists = self.actor(states)  
                 log_probs = [dists[i].log_prob(actions[:, i]) for i in range(2)]  # i=0 and i=1 for action dims

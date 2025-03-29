@@ -38,10 +38,9 @@ public class BossDecision : MonoBehaviour
     public void AttackNOW()
     {
         //Send AI
-        Vector3 playerPos = Environment.GetPlayer().transform.position;
-        Vector3 playerVelos = Environment.GetPlayer().GetComponent<Rigidbody2D>().velocity;
-        string note = $"{playerPos.x},{playerPos.y},{transform.position.x},{transform.position.y},{playerVelos.x},{playerVelos.y},{atkCount},-1";
-        AD.SendAI(note,atkCount);
+        
+        
+        AD.SendAI(-1);
         //SendAttack();
     }
     public void AttackNOW(int moveset)
@@ -50,10 +49,7 @@ public class BossDecision : MonoBehaviour
         else
         {
             //Send AI
-            Vector3 playerPos = Environment.GetPlayer().transform.position;
-            Vector3 playerVelos = Environment.GetPlayer().GetComponent<Rigidbody2D>().velocity;
-            string note = $"{playerPos.x},{playerPos.y},{transform.position.x},{transform.position.y},{playerVelos.x},{playerVelos.y},{atkCount},{moveset}";
-            AD.SendAI(note, atkCount);
+            AD.SendAI(moveset);
             //SendAttack();
         }
 

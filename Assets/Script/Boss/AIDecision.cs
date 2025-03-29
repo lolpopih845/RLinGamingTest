@@ -13,15 +13,7 @@ public class AIDecision : MonoBehaviour
 {
     private BossDecision BD;
     public int bossNo;
-    private enum Order
-    {
-        Waiting,
-        Critic
-    }
-
-    private Order order;
     private int totalReward = 0;
-    private int trapReward = 0;
     private int preqAtkCount = 0;
     private int preqMS = 0;
     void Start()
@@ -29,59 +21,34 @@ public class AIDecision : MonoBehaviour
         BD = GetComponent<BossDecision>();
     }
 
-    public async void SendAI(string note,int atkCount)
+    public async void SendAI(int moveset)
     {
-        string observe = $"Observe,{bossNo},";
-        observe += note;
-        Debug.Log($"Observe: {observe}");
-        string action = "";
-        SendReward(preqMS, atkCount);
-        if (order == Order.Waiting)
+        Vector3 playerPos = Environment.GetPlayer().transform.position;
+        Vector3 playerVelos = Environment.GetPlayer().GetComponent<Rigidbody2D>().velocity;
+        if (moveset == -1)
         {
-            action = await PipeHolder.SendObservationAsync(observe);
-            Debug.Log($"AI{bossNo} Response: {action}");
-            order = Order.Critic;
+            float [] poss = AIModel.GetSoftmaxOf(0, ClassyClassifier(playerPos), 1 + bossNo*0.1f*Mathf.Pow(-1,bossNo));
         }
-
-        BD.PackAndSend(action);
-        
+        //string note = $"{playerPos.x},{playerPos.y},{transform.position.x},{transform.position.y},{playerVelos.x},{playerVelos.y},{atkCount},-1";
     }
 
     public void SendReward(int moveset,int atkCount)
     {
-        if (order == Order.Critic)
-        {
-            int additionalMovesetReward = 0;
-            if (atkCount == 0)
-            {
-                if (preqAtkCount == 1 && totalReward > 0) additionalMovesetReward += 3;
-                if (preqAtkCount == 4) additionalMovesetReward -= 2;
-            }
-            string text = $"Reward,{bossNo},{moveset},{totalReward + additionalMovesetReward},{totalReward},{trapReward}," + (atkCount == 0 ? "True" : "False");
-            PipeHolder.SendCommmand(text);
-            order = Order.Waiting;
-            totalReward = 0;
-            trapReward = 0;
-            preqAtkCount = atkCount;
-        }
-    }
-    public void SendCommmand(string message)
-    {
-        PipeHolder.SendCommmand(message);
+
+       
     }
     public void AccumReward(int reward)
     {
         totalReward += reward;
     }
-    public void AccumTrapReward(int reward)
+    private int ClassyClassifier(Vector3 PlPos)//Horizontal * 9 + Vertical * 3 + Dist
     {
-        trapReward += reward;
+        int classy = 0;
+        classy += ((PlPos.x<transform.position.x)?2:0 + ((PlPos.x > transform.position.x) ? 1 : 0))*9 + (PlPos.y+1 < transform.position.y?2:0 + PlPos.y - 1 > transform.position.y ? 1 : 0) *3 ;
+        classy += (Vector3.Distance(PlPos, transform.position) < 1.5f ? 2 : 0);
+        classy += (Vector3.Distance(PlPos, transform.position) < 3f ? 1 : 0);
+        return classy;
     }
-    public void SetPreqMS(int ms)
-    {
-        preqMS = ms;
-    }
-
 }
 
 
