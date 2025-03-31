@@ -211,7 +211,6 @@ public class HitboxHandler : MonoBehaviour
                 else AIboi.AccumReward(2);
             }
             else if(child.TryGetComponent(out SoulTrap _) || child.TryGetComponent(out SpikeTrap _)){
-                AIboi.AccumTrapReward(3);
                 if (BM.AmIReal())
                 {
                     Environment.DamagePlayer();

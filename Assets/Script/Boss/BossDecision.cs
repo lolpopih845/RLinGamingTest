@@ -56,7 +56,7 @@ public class BossDecision : MonoBehaviour
     }
     public void SendReward()
     {
-        AD.SendReward(previousMove.moveset,atkCount);
+        AD.SendReward();
     }
     #endregion
 
@@ -123,8 +123,8 @@ public class BossDecision : MonoBehaviour
             //Pseudo Vecto3 for trap
             if (int.Parse(actArr[2]) == 6 || int.Parse(actArr[2]) == 12)
             {
-                ap.pos[0] = new Vector3(float.Parse(actArr[3]) / 10, float.Parse(actArr[4]) / 10);
-                ap.pos[1] = new Vector3(float.Parse(actArr[5]) / 20, float.Parse(actArr[6]) / 20);
+                ap.pos[0] = new Vector3(UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f));
+                ap.pos[1] = new Vector3(UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f));
                 ap.pos[2] = new Vector3(UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f));
                 ap.pos[3] = new Vector3(UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f));
             }
@@ -138,7 +138,6 @@ public class BossDecision : MonoBehaviour
 
         if (ap != null)
         {
-            AD.SetPreqMS(ap.moveset);
             BM.PackageCome(ap);
         }
     }
@@ -185,11 +184,6 @@ public class BossDecision : MonoBehaviour
         }
     }
 
-    public void ResetAI(bool isMs,bool isPr,bool isTp)
-    {
-        string message = $"Reset,{AD.bossNo},{isMs},{isPr},{isTp}";
-        AD.SendCommmand(message);
-    }
     #endregion
 
 

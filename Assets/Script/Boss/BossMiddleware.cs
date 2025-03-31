@@ -144,7 +144,6 @@ public class BossMiddleware : MonoBehaviour
             //ForceTrapProblem : Need to be fixed
             BE.ClearTrap();
             BD.EndCombo();
-            BD.ResetAI(false, false, true);
             BD.SendReward();
             yield break;
         }
