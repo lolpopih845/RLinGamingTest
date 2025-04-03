@@ -63,9 +63,12 @@ public class AIDecision : MonoBehaviour
     private int ClassyClassifier(Vector3 PlPos)//Horizontal * 9 + Vertical * 3 + Dist
     {
         int classy = 0;
-        classy += ((PlPos.x<transform.position.x)?2:0 + ((PlPos.x > transform.position.x) ? 1 : 0))*9 + (PlPos.y+1 < transform.position.y?2:0 + PlPos.y - 1 > transform.position.y ? 1 : 0) *3 ;
-        classy += (Vector3.Distance(PlPos, transform.position) < 1.5f ? 2 : 0);
-        classy += (Vector3.Distance(PlPos, transform.position) < 3f ? 1 : 0);
+        if (PlPos.x < transform.position.x) classy += 18;
+        else if (PlPos.x > transform.position.x) classy += 9;
+        if (PlPos.y + 1 < transform.position.y) classy += 6;
+        else if (PlPos.y - 1 > transform.position.y) classy += 3;
+        if (Vector3.Distance(PlPos, transform.position) < 1.5f) classy += 2;
+        else if (Vector3.Distance(PlPos, transform.position) < 3f) classy++;
         return classy;
     }
     private int Randomizer(float[] poss)
