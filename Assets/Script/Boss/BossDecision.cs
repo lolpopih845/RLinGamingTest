@@ -15,7 +15,7 @@ public class BossDecision : MonoBehaviour
     private AIDecision AD;
     private readonly int[] combo = { 0,0,0,0,0,0,0,0,0,0,0,0,0};
     private AttackPackage previousMove;
-    private int atkCount = 0;
+    public int atkCount = 0;
 
     private (float, float)[][] rules;
 

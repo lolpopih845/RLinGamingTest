@@ -13,15 +13,15 @@ public class Menu : MonoBehaviour
     void Start()
     {
         //PipeHolder.StartAIAgent();
-        SaveSystem.Load();
+        //SaveSystem.Load();
     }
     private void Update()
     {
-        if (saveTimer < 0)
-        {
-            SaveSystem.Save();
-            saveTimer = 20;
-        }
-        saveTimer -= Time.deltaTime;
+        //if (saveTimer < 0)
+        //{
+        //    SaveSystem.Save();
+        //    saveTimer = 20;
+        //}
+        //saveTimer -= Time.deltaTime;
     }
 }

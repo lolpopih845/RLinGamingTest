@@ -11,7 +11,7 @@ public class SaveSystem
     [System.Serializable]
     public struct SaveData
     {
-        public SoftMaxData SDM;
+        //public SoftMaxData SDM;
     }
     private static SaveData save = new();
     private static string fileName = Application.persistentDataPath + "/save.save";
@@ -29,14 +29,14 @@ public class SaveSystem
 
     private static void HandleSave()
     {
-        AIModel.SaveData(ref save.SDM);
+        //AIModel.SaveData(ref save.SDM);
     }
 
     public static void Load()
     {
         if(!File.Exists(fileName))
         {
-            AIModel.LoadData();
+            //AIModel.LoadData();
             return;
         }
         Debug.Log("Loaded");
@@ -49,7 +49,7 @@ public class SaveSystem
     }
     private static void HandleLoad()
     {
-        AIModel.LoadData(save.SDM);
+        //AIModel.LoadData(save.SDM);
     }
 
     private static readonly string encryptionKey = "ds58we832goidhf9b837g8ufb920ndjvbribno93";
