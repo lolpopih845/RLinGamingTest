@@ -29,16 +29,16 @@ public class AIDecision : MonoBehaviour
         isReward = false;
         int classy = ClassyClassifier(playerPos);
         float temper = 1 + bossNo * 0.1f * Mathf.Pow(-1, bossNo);
-        if (moveset == -1 || bossNo>=5)
-        {
-            float[] poss = AIModel.GetSoftmaxOf(0, classy, temper);
-            moveset = Randomizer(poss);
-        }
-        buffer[0] = new Rewarder().Set(0, classy, moveset, totalReward);
+        //if (moveset == -1 || bossNo>=5)
+        //{
+        //    float[] poss = AIModel.GetSoftmaxOf(0, classy, temper);
+        //    moveset = Randomizer(poss);
+        //}
         if (moveset == 0) {
             BD.PackAndSend(package + ",0,0,0");
             return;
         }
+        moveset = 3;
         int atk = Randomizer(AIModel.GetSoftmaxOf(1, classy, temper, moveset));
         int rot = Randomizer(AIModel.GetSoftmaxOf(2, classy, temper, moveset));
         buffer[0] = new Rewarder().Set(0,classy, moveset, totalReward);
@@ -63,12 +63,9 @@ public class AIDecision : MonoBehaviour
     private int ClassyClassifier(Vector3 PlPos)//Horizontal * 9 + Vertical * 3 + Dist
     {
         int classy = 0;
-        if (PlPos.x < transform.position.x) classy += 18;
-        else if (PlPos.x > transform.position.x) classy += 9;
-        if (PlPos.y + 1 < transform.position.y) classy += 6;
-        else if (PlPos.y - 1 > transform.position.y) classy += 3;
-        if (Vector3.Distance(PlPos, transform.position) < 1.5f) classy += 2;
-        else if (Vector3.Distance(PlPos, transform.position) < 3f) classy++;
+        if (PlPos.x > transform.position.x) classy ++;
+        if (PlPos.y - 1 > transform.position.y) classy += 2;
+        if (Vector3.Distance(PlPos, transform.position) < 5f) classy += 4;
         return classy;
     }
     private int Randomizer(float[] poss)

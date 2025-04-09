@@ -19,7 +19,7 @@ public class Menu : MonoBehaviour
     {
         if (saveTimer < 0)
         {
-            SaveSystem.Save();
+            //SaveSystem.Save();
             saveTimer = 20;
         }
         saveTimer -= Time.deltaTime;

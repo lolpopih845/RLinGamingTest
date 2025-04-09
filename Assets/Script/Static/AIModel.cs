@@ -30,8 +30,8 @@ public struct SoftMaxData
 public static class AIModel
 {
     private static readonly (int, int)[,] moveSetSoftmaxData = new (int, int)[27, 13];
-    private static readonly (int, int)[,] atkTimeSoftmaxData = new (int, int)[325,11];
-    private static readonly (int, int)[,] rotSoftmaxData = new (int, int)[325,11];
+    private static readonly (int, int)[,] atkTimeSoftmaxData = new (int, int)[104,11];
+    private static readonly (int, int)[,] rotSoftmaxData = new (int, int)[104,11];
     private static readonly (int, int)[][,] allData = new(int,int)[3][,];
 
     public static void LoadData()
@@ -40,7 +40,7 @@ public static class AIModel
         
 
         //If no save
-        for (int i = 0; i < 27; i++)
+        for (int i = 0; i < 8; i++)
         {
             for (int j = 0; j < 13; j++)
             {
@@ -63,8 +63,8 @@ public static class AIModel
     {
         //Load file
         allData[0] = ExpandArray(SMD.moveSetSoftmaxData,27,13);
-        allData[1] = ExpandArray(SMD.atkTimeSoftmaxData,325,11);
-        allData[2] = ExpandArray(SMD.rotSoftmaxData,325,11);
+        allData[1] = ExpandArray(SMD.atkTimeSoftmaxData,104,11);
+        allData[2] = ExpandArray(SMD.rotSoftmaxData,104,11);
     }
     public static void SaveData(ref SoftMaxData sdm)
     {
