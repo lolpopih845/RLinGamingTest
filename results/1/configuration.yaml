@@ -33,7 +33,7 @@ behaviors:
           memory: null
           goal_conditioning_type: hyper
           deterministic: false
-    init_path: null
+    init_path: results\1\AttackingSeq\checkpoint.pt
     keep_checkpoints: 5
     checkpoint_interval: 500000
     max_steps: 500000
@@ -56,14 +56,14 @@ engine_settings:
   width: 84
   height: 84
   quality_level: 5
-  time_scale: 20
+  time_scale: 20.0
   target_frame_rate: 120
   capture_frame_rate: 120
   no_graphics: false
 environment_parameters: null
 checkpoint_settings:
   run_id: '1'
-  initialize_from: null
+  initialize_from: '1'
   load_model: false
   resume: false
   force: true

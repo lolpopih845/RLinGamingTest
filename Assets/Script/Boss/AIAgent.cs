@@ -18,13 +18,13 @@ public class AIAgent : Agent
     public override void OnActionReceived(ActionBuffers actions)
     {
         ActionSegment<int> dec = actions.DiscreteActions;
-        Debug.Log(dec[0]);
+        //Debug.Log(dec[0]);
         GetComponent<AIDecision>().RecieveDecision(dec[0].ToString()+ ","+ dec[1].ToString() + "," + dec[2].ToString());
         
     }
     public void SendReward(float reward, bool end = false)
     {
         SetReward(reward);
-        if (end) EndEpisode();
+        EndEpisode();
     }
 }

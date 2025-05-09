@@ -54,14 +54,12 @@ public class PlayerMovement : MonoBehaviour
         DepleteCd();
         FakeGrav();
         MoveAndLook();
-
         if (GroundCheck() || StepCheck())
         {
             ReCount();
         }
         grapHB.GetComponent<Collider2D>().enabled = look == 1;
     }
-
     #region BasicMovement
     private void MoveAndLook()
     {
@@ -175,7 +173,7 @@ public class PlayerMovement : MonoBehaviour
             disableMovement = 0.1f;
             if (look == -1) { disableHold = 0.5f; disableGrav = 0f; disableMovement = 0; dashCount = 1; yield break; }
             if (dJumpCount <= 0) { disableHold = 0.5f; disableGrav = 0f; disableMovement = 0; dashCount = 1; RB2.AddForce(PC.jumpHeight / 1.1f * Vector3.up, ForceMode2D.Impulse); yield break;  }
-            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) { Debug.Log("YO");  break; }
+            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) {  break; }
             yield return null;
         }
         float timey = gameObject.layer == 8?0.5f:0.35f;
@@ -242,10 +240,12 @@ public class PlayerMovement : MonoBehaviour
     }
     private void FakeGrav()
     {
+        
         if (disableGrav > 0) return;
         var gravityVector = Vector3.down * 0.961f;
         if(dropDelay>0) dropDelay -= Time.deltaTime;
         if (GroundCheck() || StepCheck()) RB2.velocity = new Vector2(RB2.velocity.x, Mathf.Max(0,RB2.velocity.y));
+        
         else RB2.AddForce(gravityVector, ForceMode2D.Force);
     }
     #endregion
