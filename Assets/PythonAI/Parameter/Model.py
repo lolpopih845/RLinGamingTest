@@ -12,20 +12,20 @@ class ActorNetwork(nn.Module):
         super(ActorNetwork, self).__init__()
 
         self.checkpoint_file = os.path.join(chkpt_dir, 'ActorBoi')
-        self.fc1 = nn.Linear(input_dims, fc1_dims)
-        self.fc2 = nn.Linear(fc1_dims, fc2_dims)
-        self.head = nn.Linear(fc2_dims, 2*11) 
-        self.temperature = temperature
+        self.actor = nn.Sequential(
+            nn.Linear(input_dims, fc1_dims),
+            nn.ReLU(),
+            nn.Linear(fc1_dims, fc2_dims),
+            nn.ReLU(),
+            nn.Linear(fc2_dims, 2*11)
+        )
 
         self.optimizer = torch.optim.Adam(self.parameters(), lr=alpha)
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         self.to(self.device)
 
     def forward(self, state):
-        x = F.relu(self.fc1(state))
-        x = F.relu(self.fc2(x))
-
-        rest_output_logits = self.head(x) / self.temperature
+        rest_output_logits = self.actor(state) / self.temperature
         rest_output_probs = F.log_softmax(rest_output_logits.view(-1, 2, 11), dim=-1)
 
         rest_action_dists = [Categorical(rest_output_probs[:, i, :]) for i in range(2)]
@@ -149,8 +149,8 @@ class Agent:
                 actions = torch.tensor(np.array(action_arr[valid_batch]), dtype=torch.long, device=self.actor.device)
 
                 dists = self.actor(states)  
-                log_probs = [dists[i].log_prob(actions[:, i]) for i in range(2)]  # i=0 and i=1 for action dims
-                log_probs = torch.stack(log_probs, dim=-1).sum(dim=-1)  # Sum log_probs from both action dimensions
+                log_probs = [dists[i].log_prob(actions[:, i]) for i in range(2)] 
+                log_probs = torch.stack(log_probs, dim=-1).sum(dim=-1)  
 
                 prob_ratio = torch.exp(log_probs - old_probs).clamp(0.01, 10)
                 weighted_probs = advantage[batch] * prob_ratio
